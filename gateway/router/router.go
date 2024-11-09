@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 
 	"stu_Assistant/gateway/http"
-//	"stu_Assistant/gateway/middleware"
+	"stu_Assistant/gateway/middleware"
 )
 
 func NewRouter() *gin.Engine {
@@ -24,16 +24,16 @@ func NewRouter() *gin.Engine {
 		v1.POST("/user/register", http.UserRegisterHandler)
 		v1.POST("/user/login", http.UserLoginHandler)
 
-		// // 需要登录保护
-		// authed := v1.Group("/")
-		// authed.Use(middleware.JWT())
-		// {
-		// 	authed.GET("tasks", http.ListTaskHandler)
-		// 	authed.POST("task", http.CreateTaskHandler)
-		// 	authed.GET("task/:id", http.GetTaskHandler)       // task_id
-		// 	authed.PUT("task/:id", http.UpdateTaskHandler)    // task_id
-		// 	authed.DELETE("task/:id", http.DeleteTaskHandler) // task_id
-		// }
+		// 需要登录保护
+		authed := v1.Group("/")
+		authed.Use(middleware.JWT())
+		{
+			authed.GET("tasks", http.ListTaskHandler)
+			authed.POST("task", http.CreateTaskHandler)
+			authed.GET("task/:id", http.GetTaskHandler)       // task_id
+			authed.PUT("task/:id", http.UpdateTaskHandler)    // task_id
+			authed.DELETE("task/:id", http.DeleteTaskHandler) // task_id
+		}
 	}
 	return ginRouter
 }

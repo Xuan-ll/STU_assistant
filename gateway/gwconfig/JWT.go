@@ -1,8 +1,9 @@
-package gwconfig 
+package gwconfig
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 var jwtSecret = []byte("TodoList")
@@ -13,7 +14,7 @@ type Claims struct {
 }
 
 // 签发用户token
-func GenerateToken(id uint)(string,error) {
+func GenerateToken(id uint) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(24 * time.Hour)
 	claims := Claims{
