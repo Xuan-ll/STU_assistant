@@ -23,13 +23,13 @@ func ListTaskHandler(ctx *gin.Context) {
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "JWT中获取用户信息失败"))
 		return
 	} 
-	var ok bool
-	taskReq.Uid, ok = uid.(uint64)
+        user_id,ok := uid.(uint)
     if !ok {
 		err := errors.New("user_id not uint64")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
+	taskReq.Uid = uint64(user_id)
 	// 调用服务端的函数
 	taskResp, err := rpc.TaskList(ctx, &taskReq)
 	if err != nil {
@@ -52,13 +52,13 @@ func CreateTaskHandler(ctx *gin.Context) {
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "JWT中获取用户信息失败"))
 		return
 	} 
-	var ok bool
-	req.Uid, ok = uid.(uint64)
+	user_id, ok := uid.(uint)
     if !ok {
 		err := errors.New("user_id not uint64")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
+	req.Uid = uint64(user_id)
 	taskRes, err := rpc.TaskCreate(ctx, &req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, RespError(ctx, err, "TaskList RPC 调度失败"))
@@ -79,13 +79,13 @@ func GetTaskHandler(ctx *gin.Context) {
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "JWT中获取用户信息失败"))
 		return
 	} 
-	var ok bool
-	req.Uid, ok = uid.(uint64)
+	user_id, ok := uid.(uint)
     if !ok {
 		err := errors.New("user_id not uint64")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
+	req.Uid = uint64(user_id)
 	req.Id = cast.ToUint64(ctx.Param("id"))
 	taskRes, err := rpc.TaskGet(ctx, &req)
 	if err != nil {
@@ -107,13 +107,13 @@ func UpdateTaskHandler(ctx *gin.Context) {
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "JWT中获取用户信息失败"))
 		return
 	} 
-	var ok bool
-	req.Uid, ok = uid.(uint64)
+	user_id, ok := uid.(uint)
     if !ok {
 		err := errors.New("user_id not uint64")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
+	req.Uid = uint64(user_id)
 	req.Id = cast.ToUint64(ctx.Param("id"))
 	taskRes, err := rpc.TaskUpdate(ctx, &req)
 	if err != nil {
@@ -135,15 +135,15 @@ func DeleteTaskHandler(ctx *gin.Context) {
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "JWT中获取用户信息失败"))
 		return
 	} 
-	var ok bool
-	req.Uid, ok = uid.(uint64)
+	user_id, ok := uid.(uint)
     if !ok {
 		err := errors.New("user_id not uint64")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
+	req.Uid = uint64(user_id)
 	req.Id = cast.ToUint64(ctx.Param("id"))
-	taskRes, err := rpc.TaskDelete(ctx, &req)
+        taskRes, err := rpc.TaskDelete(ctx, &req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, RespError(ctx, err, "TaskDelete RPC 调度失败"))
 		return
