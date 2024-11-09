@@ -25,7 +25,7 @@ func ListTaskHandler(ctx *gin.Context) {
 	} 
         user_id,ok := uid.(uint)
     if !ok {
-		err := errors.New("user_id not uint64")
+		err := errors.New("user_id not uint")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
@@ -54,7 +54,7 @@ func CreateTaskHandler(ctx *gin.Context) {
 	} 
 	user_id, ok := uid.(uint)
     if !ok {
-		err := errors.New("user_id not uint64")
+		err := errors.New("user_id not uint")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
@@ -81,7 +81,7 @@ func GetTaskHandler(ctx *gin.Context) {
 	} 
 	user_id, ok := uid.(uint)
     if !ok {
-		err := errors.New("user_id not uint64")
+		err := errors.New("user_id not uint")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}
@@ -109,7 +109,7 @@ func UpdateTaskHandler(ctx *gin.Context) {
 	} 
 	user_id, ok := uid.(uint)
     if !ok {
-		err := errors.New("user_id not uint64")
+		err := errors.New("user_id not uint")
         ctx.JSON(http.StatusBadRequest, RespError(ctx, err, "user_id类型转换失败"))
 		return
 	}

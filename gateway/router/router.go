@@ -28,6 +28,7 @@ func NewRouter() *gin.Engine {
 		authed := v1.Group("/")
 		authed.Use(middleware.JWT())
 		{
+			authed.GET("renew", http.RenewExpireTimeHandler) //刷新JWT的token防止过期。
 			authed.GET("tasks", http.ListTaskHandler)
 			authed.POST("task", http.CreateTaskHandler)
 			authed.GET("task/:id", http.GetTaskHandler)       // task_id

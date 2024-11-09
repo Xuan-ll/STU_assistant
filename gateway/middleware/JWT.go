@@ -45,6 +45,7 @@ func JWT() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		
 		c.Set("user_id", claims.Id)  // 后续业务中可通过 c.Get("user_id") 获取用户id
 		// ctl.InitUserInfo(c.Request.Context(), &ctl.UserInfo{Id: claims.Id})
 		c.Next()
