@@ -1,0 +1,36 @@
+syntax = "proto3";
+package services;
+option go_package = "./;pb";
+
+message ReminderModel{
+  //@inject_tag: json:"title" form:"title"
+  string title = 1;
+  //@inject_tag: json:"end_time" form:"end_time"
+  int64 end_time = 2;
+}
+
+message ReminderRequest{
+  //@inject_tag: json:"uid" form:"uid"
+  uint64 uid = 1;
+  //@inject_tag: json:"dead_line" form:"dead_line"
+  int64 dead_line = 2;
+}
+
+message GetTaskRequest{
+  //@inject_tag: json:"uid" form:"uid"
+  uint64 uid = 1;
+}
+
+message ReminderListRespose{
+  // @inject_tag: json:"task_list"
+  repeated ReminderModel task_list=1;
+  // @inject_tag: json:"count"
+  uint32 count=2;
+  // @inject_tag: json:"code"
+  uint32 code=3;
+} 
+
+service ReminderService{
+  rpc UpdateDeadLine(ReminderRequest) returns(ReminderListRespose);
+  rpc GetTaskInCache(GetTaskRequest) returns(ReminderListRespose);
+}

@@ -6,11 +6,11 @@ import (
 	"github.com/go-micro/plugins/v4/registry/etcd"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/registry"
-    
-    "stu_Assistant/user/userconfig"
-	"stu_Assistant/user/repository/ormdb"
+
 	"stu_Assistant/idl/pb"
+	"stu_Assistant/user/repository/ormdb"
 	"stu_Assistant/user/service"
+	"stu_Assistant/user/userconfig"
 )
 
 func main() {

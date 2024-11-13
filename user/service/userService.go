@@ -71,7 +71,6 @@ func (u *UserSrv) UserRegister(ctx context.Context, req *pb.UserRequest, resp *p
 		resp.Code = userconfig.ERROR
 		return
 	}
-
 	resp.UserDetail = BuildUser(user)
 	return
 }

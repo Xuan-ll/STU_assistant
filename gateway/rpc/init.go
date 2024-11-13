@@ -9,6 +9,7 @@ import (
 var (
 	UserService pb.UserService
 	TaskService pb.TaskService
+	ReminderService pb.ReminderService
 )
 
 func InitRPC() {
@@ -24,6 +25,13 @@ func InitRPC() {
 	)
 	taskService := pb.NewTaskService("rpcTaskService", taskMicroService.Client())
 
+	// reminder
+	reminderMicroService := micro.NewService(
+		micro.Name("reminderService.client"),
+	)
+	reminderService := pb.NewReminderService("rpcReminderService", reminderMicroService.Client())	
+
 	UserService = userService
 	TaskService = taskService
+	ReminderService = reminderService
 }
