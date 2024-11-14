@@ -35,8 +35,8 @@ func NewRouter() *gin.Engine {
 			authed.PUT("task/:id", http.UpdateTaskHandler)    // task_id
 			authed.DELETE("task/:id", http.DeleteTaskHandler) // task_id
 
-			authed.PUT("reminders/1", )
-			authed.GET("reminders", )
+			authed.PUT("reminders/1", http.UpdateReminderHandler)
+			authed.GET("reminders", http.GetReminderHandler)
 		}
 	}
 	return ginRouter

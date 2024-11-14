@@ -26,9 +26,9 @@ type ReminderModel struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"title" form:"title"
-	Title string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Title string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty" form:"title"`
 	// @inject_tag: json:"end_time" form:"end_time"
-	EndTime int64 `protobuf:"varint,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	EndTime int64 `protobuf:"varint,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty" form:"end_time"`
 }
 
 func (x *ReminderModel) Reset() {
@@ -81,9 +81,9 @@ type ReminderRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"uid" form:"uid"
-	Uid uint64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Uid uint64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" form:"uid"`
 	// @inject_tag: json:"dead_line" form:"dead_line"
-	DeadLine int64 `protobuf:"varint,2,opt,name=dead_line,json=deadLine,proto3" json:"dead_line,omitempty"`
+	DeadLine int64 `protobuf:"varint,2,opt,name=dead_line,json=deadLine,proto3" json:"dead_line,omitempty" form:"dead_line"`
 }
 
 func (x *ReminderRequest) Reset() {
@@ -136,7 +136,7 @@ type GetTaskRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"uid" form:"uid"
-	Uid uint64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Uid uint64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" form:"uid"`
 }
 
 func (x *GetTaskRequest) Reset() {

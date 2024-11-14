@@ -24,7 +24,7 @@ func (dao *ReminderDao) CreateReminder(in *model.Reminder) (err error) {
 }
 
 func (dao *ReminderDao) FindReminder(uid uint) (r *model.Reminder, err error) {
-	err = dao.Model(&model.Reminder{}).Where("user_id = ?", uid).Find(&r).Error
+	err = dao.Model(&model.Reminder{}).Where("user_id = ?", uid).First(&r).Error
 	if err!= nil {
 		return nil, err
     }

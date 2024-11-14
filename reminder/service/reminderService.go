@@ -37,7 +37,7 @@ func (r *ReminderSrv) UpdateDeadLine(ctx context.Context, req *pb.ReminderReques
 			resp.Code = reminderconfig.ERROR
 			return
 		}
-		err = cache.RemoveTasks(ctx, req.Uid, req.DeadLine)
+		err = cache.RemoveTasks(ctx, req.Uid)
 		if err != nil {
 			resp.Code = reminderconfig.ERROR
 			return
@@ -49,11 +49,13 @@ func (r *ReminderSrv) UpdateDeadLine(ctx context.Context, req *pb.ReminderReques
 			return
 		}
 		var taskRes []*pb.ReminderModel
-		for _, item := range tasks {
-			taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
+		resp.Count = uint32(len(tasks))
+		if resp.Count != 0 {
+			for _, item := range tasks {
+				taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
+			}	
 		}	
 		resp.TaskList = taskRes
-		resp.Count = uint32(len(tasks))	
 	} else if find_error == nil {
 		user_dealine.Deadline = req.DeadLine
 		err = ormdb.NewReminderDao(ctx).UpdateReminder(user_dealine)
@@ -61,7 +63,7 @@ func (r *ReminderSrv) UpdateDeadLine(ctx context.Context, req *pb.ReminderReques
 			resp.Code = reminderconfig.ERROR
 			return
 		}
-		err = cache.RemoveTasks(ctx, req.Uid, req.DeadLine)
+		err = cache.RemoveTasks(ctx, req.Uid)
 		if err != nil {
 			resp.Code = reminderconfig.ERROR
 			return
@@ -73,11 +75,13 @@ func (r *ReminderSrv) UpdateDeadLine(ctx context.Context, req *pb.ReminderReques
 			return
 		}
 		var taskRes []*pb.ReminderModel
-		for _, item := range tasks {
-			taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
+		resp.Count = uint32(len(tasks))
+		if resp.Count != 0 {
+			for _, item := range tasks {
+				taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
+			}	
 		}	
-		resp.TaskList = taskRes
-		resp.Count = uint32(len(tasks))			
+		resp.TaskList = taskRes		
 	} else {
 		resp.Code = reminderconfig.ERROR
 		return
@@ -94,7 +98,7 @@ func (r *ReminderSrv) GetTaskInCache(ctx context.Context, req *pb.GetTaskRequest
 		return
 	}
 	deadline := user_deadline.Deadline
-	err = cache.RemoveTasks(ctx, req.Uid, deadline)
+	err = cache.RemoveTasks(ctx, req.Uid)
 	if err != nil {
 		resp.Code = reminderconfig.ERROR
 		return
@@ -106,12 +110,14 @@ func (r *ReminderSrv) GetTaskInCache(ctx context.Context, req *pb.GetTaskRequest
 		return
 	}
     var taskRes []*pb.ReminderModel
-	for _, item := range tasks {
-		taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
-	}	
-	resp.TaskList = taskRes
 	resp.Count = uint32(len(tasks))
-
+	if resp.Count != 0 {
+		for _, item := range tasks {
+			taskRes = append(taskRes, BuildReminder(item.Member.(string), int64(item.Score)))
+		}	
+	}
+	resp.TaskList = taskRes
+    
 	return
 }
 

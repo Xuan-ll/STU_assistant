@@ -40,7 +40,7 @@ var (
 )
 
 func Init() {
-	file, err := ini.Load("./config/config.ini")
+	file, err := ini.Load("./user/userconfig/config.ini")
 	if err != nil {
 		fmt.Println("配置文件读取错误，请检查文件路径:", err)
 	}
