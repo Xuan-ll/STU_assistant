@@ -97,7 +97,7 @@ func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 		resp.Code = taskconfig.ERROR
 		return
 	}
-	err = cache.AddOrUpdateRedis(ctx, uint(req.Uid), req.Title, req.Content, req.EndTime)
+	err = cache.AddOrUpdateRedis(ctx, uint(req.Uid), req.Title, req.Content, req.EndTime) //!!!!
 	if err!= nil {
 		resp.Code = taskconfig.ERROR
 		return

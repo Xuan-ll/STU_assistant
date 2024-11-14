@@ -184,9 +184,9 @@ type ReminderListRespose struct {
 	// @inject_tag: json:"task_list"
 	TaskList []*ReminderModel `protobuf:"bytes,1,rep,name=task_list,json=taskList,proto3" json:"task_list,omitempty"`
 	// @inject_tag: json:"count"
-	Count uint32 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	Count uint32 `protobuf:"varint,2,opt,name=count,proto3" json:"count"`
 	// @inject_tag: json:"code"
-	Code uint32 `protobuf:"varint,3,opt,name=code,proto3" json:"code,omitempty"`
+	Code uint32 `protobuf:"varint,3,opt,name=code,proto3" json:"code"`
 }
 
 func (x *ReminderListRespose) Reset() {
