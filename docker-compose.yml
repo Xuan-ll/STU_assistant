@@ -1,5 +1,3 @@
-version: '3.7'
-
 networks:
   stu_assistant:
     driver: bridge
@@ -73,3 +71,11 @@ services:
       - /usr/local/redis:/usr/local/redis
     networks:
       - stu_assistant
+
+  gateway:
+    container_name: gateway
+    image: gateway:v1
+    restart: always
+    ports:
+      - "4000:4000"
+    network_mode: "host"
