@@ -37,6 +37,11 @@ func NewRouter() *gin.Engine {
 
 			authed.PUT("reminders/1", http.UpdateReminderHandler)
 			authed.GET("reminders", http.GetReminderHandler)
+
+			authed.POST("course", http.CreateCourseHandler)
+			authed.GET("course/:week", http.ListCourseHandler)
+			authed.PUT("course/:id", http.UpdateCourseHandler)
+			authed.DELETE("course/:id", http.DeleteCourseHandler)
 		}
 	}
 	return ginRouter

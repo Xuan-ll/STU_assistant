@@ -3,7 +3,7 @@ DIR = $(shell pwd)/
 CONFIG_PATH = $(shell pwd)/gateway/gwconfig
 IDL_PATH = $(shell pwd)/idl
 
-SERVICES := gateway user task reminder
+SERVICES := gateway user task reminder course
 service = $(word 1, $@)
 
 node = 0
@@ -38,7 +38,7 @@ env-down:
 
 .PHONY: run
 run: 
-	make -j4 run-all;
+	make -j5 run-all;
 
 .PHONY: run-all
 run-all: 
