@@ -9,6 +9,7 @@ import (
 	"stu_Assistant/idl/pb"
 	"stu_Assistant/task/repository/model"
 	"stu_Assistant/task/repository/ormdb"
+	"stu_Assistant/task/repository/cache"
 	"stu_Assistant/task/taskconfig"
 )
 
@@ -43,6 +44,11 @@ func (t *TaskSrv) CreateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 		Content:   req.Content,
 		StartTime: req.StartTime,
 		EndTime:   req.EndTime,
+	}
+	err = cache.AddOrUpdateRedis(ctx, m.Uid, m.Title, m.Content, m.EndTime)
+	if err!= nil {
+		resp.Code = taskconfig.ERROR
+		return
 	}
 	return ormdb.NewTaskDao(ctx).CreateTask(m)
 }
@@ -91,6 +97,11 @@ func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 		resp.Code = taskconfig.ERROR
 		return
 	}
+	err = cache.AddOrUpdateRedis(ctx, uint(req.Uid), req.Title, req.Content, req.EndTime) //!!!!
+	if err!= nil {
+		resp.Code = taskconfig.ERROR
+		return
+	}
 	resp.TaskDetail = BuildTask(taskData)
 	return
 }
@@ -103,6 +114,7 @@ func (t *TaskSrv) DeleteTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 		resp.Code = taskconfig.ERROR
 		return
 	}
+    err = cache.RemoveRedis(ctx, uint(req.Uid), req.Title, req.Content)  
 	return
 }
 

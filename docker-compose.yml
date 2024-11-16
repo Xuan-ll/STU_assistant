@@ -1,0 +1,81 @@
+networks:
+  stu_assistant:
+    driver: bridge
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=stu_assistant
+      - MYSQL_USER=stu_assistant
+      - MYSQL_PASSWORD=stu_assistant
+      - TZ=Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./config/mysql:/var/lib/mysql
+      - ./logs/mysql/log:/var/log/mysql
+
+    ports:
+      - "3306:3306"
+    networks:
+      - stu_assistant
+
+  etcd:
+    image: "quay.io/coreos/etcd:v3.5.5"
+    container_name: etcd
+    restart: on-failure
+    privileged: true
+    ports:
+      - "2379:2379"
+    environment:
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - "ALLOW_NONE_AUTHENTICATION=yes"
+      - ETCD_API=3
+      - ETCD_CERT_FILE="/path/to/server.crt"
+      - ETCD_KEY_FILE="/path/to/server.key"
+      - ETCD_AUTH="simple"
+      - ETCD_AUTH_USER="assistant"
+      - ETCD_AUTH_PASSWORD="assistant"
+    networks:
+      - stu_assistant
+
+  etcd-keeper:
+    image: "evildecay/etcdkeeper:latest"
+    container_name: etcd-keeper
+    environment:
+      - ETCD_HOSTS=http://etcd:2379
+      - SW_STORAGE_ETCD_CLUSTER_NODES=etcd:2379
+      - HOST=127.0.0.1
+      - HOSTNAME=etcd-keeper
+    links:
+      - etcd
+    ports:
+      - "8080:8080"
+    networks:
+      - stu_assistant
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    environment:
+      - REDIS_PASSWORD=stu_assistant
+      - ALLOW_EMPTY_PASSWORD=no
+    ports:
+      - "6379:6379"
+    volumes:
+      - /usr/local/redis:/usr/local/redis
+    networks:
+      - stu_assistant
+
+  gateway:
+    container_name: gateway
+    image: gateway:v1
+    restart: always
+    ports:
+      - "4000:4000"
+    network_mode: "host"
