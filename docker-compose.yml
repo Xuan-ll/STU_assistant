@@ -17,7 +17,6 @@ services:
       - /etc/localtime:/etc/localtime
       - ./config/mysql:/var/lib/mysql
       - ./logs/mysql/log:/var/log/mysql
-
     ports:
       - "3306:3306"
     networks:
@@ -74,8 +73,52 @@ services:
 
   gateway:
     container_name: gateway
-    image: gateway:v1
+    image: yuqingorigingod/gateway
     restart: always
+    depends_on:
+      - user
+      - task
+      - reminder
     ports:
       - "4000:4000"
-    network_mode: "host"
+    networks:
+      - stu_assistant
+  
+  user:
+    container_name: user
+    image: yuqingorigingod/user
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    ports:
+      - "8082:8082"
+    networks:
+      - stu_assistant
+  
+  task:
+    container_name: task
+    image: yuqingorigingod/task
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    ports:
+      - "8083:8083"
+    networks:
+      - stu_assistant
+  
+  reminder:
+    container_name: reminder
+    image: yuqingorigingod/reminder
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    ports:
+      - "8084:8084"
+    networks:
+      - stu_assistant
