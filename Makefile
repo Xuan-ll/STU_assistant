@@ -41,7 +41,8 @@ run:
 	make -j4 run-all;
 
 .PHONY: run-all
-run-all: $(addprefix run-, $(SERVICES))
+run-all: 
+	$(addprefix run-, $(SERVICES))
 
 .PHONY: run-%
 run-%:
