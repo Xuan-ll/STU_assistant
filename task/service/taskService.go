@@ -92,10 +92,23 @@ func (t *TaskSrv) GetTask(ctx context.Context, req *pb.TaskRequest, resp *pb.Tas
 func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	// 查找该用户的这条信息
 	resp.Code = taskconfig.SUCCESS
+    oldTaskData, err:= ormdb.NewTaskDao(ctx).GetTaskByTaskIdAndUserId(req.Id, req.Uid)
+	if err!= nil {
+		resp.Code = taskconfig.ERROR
+		return
+	}
 	taskData, err := ormdb.NewTaskDao(ctx).UpdateTask(req)
 	if err != nil {
 		resp.Code = taskconfig.ERROR
 		return
+	}
+	err = cache.RemoveRedis(ctx, uint(oldTaskData.Uid), oldTaskData.Title, oldTaskData.Content)
+	if err!= nil {
+		resp.Code = taskconfig.ERROR
+		return
+	}
+    if req.EndTime == 0{
+		req.EndTime = oldTaskData.EndTime
 	}
 	err = cache.AddOrUpdateRedis(ctx, uint(req.Uid), req.Title, req.Content, req.EndTime) //!!!!
 	if err!= nil {
