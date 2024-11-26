@@ -72,8 +72,11 @@ services:
       - stu_assistant
 
   gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
     container_name: gateway
-    image: yuqingorigingod/gateway
+    #image: yuqingorigingod/gateway
     restart: always
     depends_on:
       - user
@@ -86,7 +89,10 @@ services:
   
   user:
     container_name: user
-    image: yuqingorigingod/user
+    #image: yuqingorigingod/user
+    build:
+      context: .
+      dockerfile: Dockerfile.user
     restart: always
     depends_on:
       - mysql
@@ -99,7 +105,10 @@ services:
   
   task:
     container_name: task
-    image: yuqingorigingod/task
+    #image: yuqingorigingod/task
+    build:
+      context: .
+      dockerfile: Dockerfile.task
     restart: always
     depends_on:
       - mysql
@@ -112,7 +121,10 @@ services:
   
   reminder:
     container_name: reminder
-    image: yuqingorigingod/reminder
+    #image: yuqingorigingod/reminder
+    build:
+      context: .
+      dockerfile: Dockerfile.reminder
     restart: always
     depends_on:
       - mysql
@@ -120,5 +132,21 @@ services:
       - etcd
     ports:
       - "8084:8084"
+    networks:
+      - stu_assistant
+
+  course:
+    container_name: course
+    #image: yuqingorigingod/reminder
+    build:
+      context: .
+      dockerfile: Dockerfile.course
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    ports:
+      - "8085:8085"
     networks:
       - stu_assistant

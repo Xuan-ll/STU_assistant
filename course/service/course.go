@@ -24,7 +24,7 @@ func GetCourseSrv() *CourseSrv {
 	return CourseSrvIns
 }
 
-// CreateCourse 创建课程，将课程信息生产，放到rabbitMQ消息队列中
+// CreateCourse 创建课程，将课程信息生产
 func (t *CourseSrv) CreateCourse(ctx context.Context, req *pb.CourseRequest, resp *pb.CourseDetailResponse) (err error) {
 	resp.Code = config.SUCCESS
 	m := &model.Course{
@@ -77,19 +77,6 @@ func (t *CourseSrv) DeleteCourse(ctx context.Context, req *pb.CourseRequest, res
 		return
 	}
 	return
-}
-
-func CourseMQ2MySQL(ctx context.Context, req *pb.CourseRequest) error {
-	m := &model.Course{
-		Uid:        uint(req.Uid),
-		CourseName: req.CourseName,
-		StartClass: uint(req.StartClass),
-		EndClass:   uint(req.EndClass),
-		StartWeek:  uint(req.StartWeek),
-		EndWeek:    uint(req.EndWeek),
-		DayOfWeek:  uint(req.DayOfWeek),
-	}
-	return dao.NewCourseDao(ctx).CreateCourse(m)
 }
 
 func BuildCourse(item *model.Course) *pb.CourseModel {

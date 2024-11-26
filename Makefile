@@ -30,7 +30,7 @@ $(SERVICES):
 
 .PHONY: env-up
 env-up:
-	docker compose up -d
+	docker compose up --build -d
 
 .PHONY: env-down
 env-down:
