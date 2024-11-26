@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	UserService pb.UserService
-	TaskService pb.TaskService
+	UserService     pb.UserService
+	TaskService     pb.TaskService
+	CourseService   pb.CourseService
 	ReminderService pb.ReminderService
 )
 
@@ -29,9 +30,15 @@ func InitRPC() {
 	reminderMicroService := micro.NewService(
 		micro.Name("reminderService.client"),
 	)
-	reminderService := pb.NewReminderService("rpcReminderService", reminderMicroService.Client())	
+	reminderService := pb.NewReminderService("rpcReminderService", reminderMicroService.Client())
+
+	CourseMicroService := micro.NewService(
+		micro.Name("courseService.client"),
+	)
+	courseService := pb.NewCourseService("rpcCourseService", CourseMicroService.Client())
 
 	UserService = userService
 	TaskService = taskService
 	ReminderService = reminderService
+	CourseService = courseService
 }

@@ -1,4 +1,4 @@
-package reminderconfig
+package config
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ var (
 	EtcdHost string
 	EtcdPort string
 
-	ReminderServiceAddress string
+	CourseServiceAddress string
 
 	RedisHost     string
 	RedisPort     string
@@ -33,7 +33,7 @@ var (
 )
 
 func Init() {
-	file, err := ini.Load("./reminder/reminderconfig/config.ini")
+	file, err := ini.Load("./course/config/config.ini")
 	if err != nil {
 		fmt.Println("配置文件读取错误，请检查文件路径:", err)
 	}
@@ -59,7 +59,7 @@ func LoadEtcd(file *ini.File) {
 }
 
 func LoadServer(file *ini.File) {
-	ReminderServiceAddress = file.Section("server").Key("ReminderServiceAddress").String()
+	CourseServiceAddress = file.Section("server").Key("CourseServiceAddress").String()
 }
 
 func LoadRedisData(file *ini.File) {

@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package services;
+option go_package = "./;pb";
+
+//TODO
+//还需要设置起始周
+//上课地点
+//详情：任课老师
+
+// 课程模型
+message CourseModel {
+  // @inject_tag: json:"id" form:"id"
+  uint64 id = 1;
+  // @inject_tag: json:"uid" form:"uid"
+  uint64 uid = 2;
+  // @inject_tag: json:"course_name" form:"course_name"
+  string course_name = 3;
+  // @inject_tag: json:"start_class" form:"start_class"
+  uint32 start_class = 4;
+  // @inject_tag: json:"end_class" form:"end_class"
+  uint32 end_class = 5;
+  // @inject_tag: json:"start_week" form:"start_week"
+  uint32 start_week = 6;
+  // @inject_tag: json:"end_week" form:"end_week"
+  uint32 end_week = 7;
+  // @inject_tag: json:"day_of_week" form:"day_of_week"
+  uint32 day_of_week = 8;
+  // @inject_tag: json:"create_time" form:"create_time"
+  int64 create_time = 9;
+  // @inject_tag: json:"update_time" form:"update_time"
+  int64 update_time = 10;
+}
+
+// 课程请求模型
+message CourseRequest {
+  // @inject_tag: json:"id" form:"id"
+  uint64 id = 1;
+  // @inject_tag: json:"uid" form:"uid"
+  uint64 uid = 2;
+  // @inject_tag: json:"course_name" form:"course_name"
+  string course_name = 3;
+  // @inject_tag: json:"start_class" form:"start_class"
+  uint32 start_class = 4;
+  // @inject_tag: json:"end_class" form:"end_class"
+  uint32 end_class = 5;
+  // @inject_tag: json:"start_week" form:"start_week"
+  uint32 start_week = 6;
+  // @inject_tag: json:"end_week" form:"end_week"
+  uint32 end_week = 7;
+  // @inject_tag: json:"day_of_week" form:"day_of_week"
+  uint32 day_of_week = 8;
+  // @inject_tag: json:"week" form:"week"
+  uint32 week = 9;
+}
+
+// 课程列表响应模型
+message CourseListResponse {
+  // @inject_tag: json:"course_list"
+  repeated CourseModel course_list = 1;
+  // @inject_tag: json:"count"
+  uint32 count = 2;
+  // @inject_tag: json:"code"
+  uint32 code = 3;
+}
+
+// 课程详情响应模型
+message CourseDetailResponse {
+    // @inject_tag: json:"course_detail"
+    CourseModel course_detail = 1;
+    // @inject_tag: json:"code"
+    uint32 code = 2;
+}
+
+// 课程服务接口
+service CourseService {
+    rpc CreateCourse(CourseRequest) returns (CourseDetailResponse);
+    rpc GetCoursesList(CourseRequest) returns (CourseListResponse);
+    rpc UpdateCourse(CourseRequest) returns (CourseDetailResponse);
+    rpc DeleteCourse(CourseRequest) returns (CourseDetailResponse);
+}
