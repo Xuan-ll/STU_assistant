@@ -1,49 +1,11 @@
-DIR = $(shell pwd)/
+.PHONY: app-up
+app-up:
+	docker compose up -d
 
-CONFIG_PATH = $(shell pwd)/gateway/gwconfig
-IDL_PATH = $(shell pwd)/idl
-
-SERVICES := gateway user task reminder course
-service = $(word 1, $@)
-
-node = 0
-
-BIN = $(shell pwd)/bin
-
-.PHONY: proto
-proto:
-	@for file in $(IDL_PATH)/*.proto; do \
-		protoc -I $(IDL_PATH) $$file --micro_out=$(IDL_PATH)/pb --go_out=$(IDL_PATH)/pb; \
-	done
-
-.PHONY: proto2
-proto2:
-	@for file in $(shell find $(IDL_PATH)/pb/* -type f); do \
-		protoc-go-inject-tag -input=$$file; \
-	done
-
-
-.PHONY: $(SERVICES)
-$(SERVICES):
-	go build -o $(BIN)/$(service) $(DIR)/$(service)/cmd
-	$(BIN)/$(service) -config $(CONFIG_PATH) -srvnum=$(node)
-
-.PHONY: env-up
-env-up:
-	docker compose up --build -d
-
-.PHONY: env-down
-env-down:
+.PHONY: app-down
+app-down:
 	docker compose down
 
-.PHONY: run
-run: 
-	make -j5 run-all;
-
-.PHONY: run-all
-run-all: 
-	$(addprefix run-, $(SERVICES))
-
-.PHONY: run-%
-run-%:
-	go run $(DIR)/$*/cmd/main.go;
+.PHONY: app-rebuild
+app-rebuild:
+	docker compose up -d --build
