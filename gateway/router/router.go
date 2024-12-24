@@ -12,7 +12,7 @@ import (
 
 func NewRouter() *gin.Engine {
 	ginRouter := gin.Default()
-	// ginRouter.Use(middleware.Cors())
+	ginRouter.Use(middleware.Cors())
 	store := cookie.NewStore([]byte("something-very-secret"))
 	ginRouter.Use(sessions.Sessions("mysession", store))
 	v1 := ginRouter.Group("/api/v1")
