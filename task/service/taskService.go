@@ -122,12 +122,18 @@ func (t *TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.
 // DeleteTask 删除备忘录
 func (t *TaskSrv) DeleteTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	resp.Code = taskconfig.SUCCESS
+	// 查找该用户的这条信息
+	r, err := ormdb.NewTaskDao(ctx).GetTaskByTaskIdAndUserId(req.Id, req.Uid)
+	if err != nil {
+		resp.Code = taskconfig.ERROR
+		return
+	}
 	err = ormdb.NewTaskDao(ctx).DeleteTaskByIdAndUserId(req.Id, req.Uid)
 	if err != nil {
 		resp.Code = taskconfig.ERROR
 		return
 	}
-    err = cache.RemoveRedis(ctx, uint(req.Uid), req.Title, req.Content)  
+    err = cache.RemoveRedis(ctx, uint(r.Uid), r.Title, r.Content)  
 	return
 }
 

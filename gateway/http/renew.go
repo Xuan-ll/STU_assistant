@@ -8,7 +8,10 @@ import (
 
 	"stu_Assistant/gateway/gwconfig"
 )
-
+type tokenResp struct {
+	//@inject_tag: json:"token" form:"token"
+	Token string `json:"token" form:"token"`
+}
 func RenewExpireTimeHandler(ctx *gin.Context) {
 	uid, exists := ctx.Get("user_id")
 	if !exists {
@@ -27,5 +30,8 @@ func RenewExpireTimeHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, RespError(ctx, err, "GenerateToken fail at RenewExpireTimeHandler"))
 		return
 	}
-	ctx.JSON(http.StatusOK, RespSuccess(ctx, token))
+	tokenR := tokenResp{
+		Token: token,
+	}
+	ctx.JSON(http.StatusOK, RespSuccess(ctx, tokenR))
 }

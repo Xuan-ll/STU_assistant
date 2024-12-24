@@ -5,8 +5,8 @@ import (
 
 	"gorm.io/gorm"
 
-	"stu_Assistant/task/repository/model"
 	"stu_Assistant/idl/pb"
+	"stu_Assistant/task/repository/model"
 )
 
 type TaskDao struct {
@@ -25,7 +25,7 @@ func (dao *TaskDao) ListTaskByUserId(userId uint64, start, limit int) (r []*mode
 	err = dao.Model(&model.Task{}).Offset(start).
 		Limit(limit).Where("uid = ?", userId).
 		Find(&r).Error
-    if err!= nil {
+	if err != nil {
 		return nil, 0, err
 	}
 	err = dao.Model(&model.Task{}).Where("uid = ?", userId).
@@ -54,6 +54,8 @@ func (dao *TaskDao) UpdateTask(req *pb.TaskRequest) (r *model.Task, err error) {
 	r.Title = req.Title
 	r.Status = int(req.Status)
 	r.Content = req.Content
+	r.StartTime = req.StartTime
+	r.EndTime = req.EndTime
 
 	err = dao.Save(&r).Error
 	return
