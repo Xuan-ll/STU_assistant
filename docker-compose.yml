@@ -150,3 +150,17 @@ services:
       - "8085:8085"
     networks:
       - stu_assistant
+    
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    #image: frontend
+    restart: always
+    depends_on:
+      - gateway
+    ports:
+      - "80:80"
+    networks:
+      - stu_assistant
