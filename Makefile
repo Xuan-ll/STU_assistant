@@ -6,6 +6,10 @@ app-up:
 app-down:
 	docker compose down
 
-.PHONY: app-rebuild
-app-rebuild:
-	docker compose up -d --build
+IMAGES := gateway task user reminder course frontend
+
+.PHONY: build-images $(IMAGES)
+build-images: $(IMAGES)
+
+$(IMAGES):
+	docker build -t image-$@ -f Dockerfile.$@ .

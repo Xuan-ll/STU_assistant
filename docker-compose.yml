@@ -42,20 +42,20 @@ services:
     networks:
       - stu_assistant
 
-  etcd-keeper:
-    image: "evildecay/etcdkeeper:latest"
-    container_name: etcd-keeper
-    environment:
-      - ETCD_HOSTS=http://etcd:2379
-      - SW_STORAGE_ETCD_CLUSTER_NODES=etcd:2379
-      - HOST=127.0.0.1
-      - HOSTNAME=etcd-keeper
-    links:
-      - etcd
-    ports:
-      - "8080:8080"
-    networks:
-      - stu_assistant
+  # etcd-keeper:
+  #   image: "evildecay/etcdkeeper:latest"
+  #   container_name: etcd-keeper
+  #   environment:
+  #     - ETCD_HOSTS=http://etcd:2379
+  #     - SW_STORAGE_ETCD_CLUSTER_NODES=etcd:2379
+  #     - HOST=127.0.0.1
+  #     - HOSTNAME=etcd-keeper
+  #   links:
+  #     - etcd
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - stu_assistant
 
   redis:
     container_name: redis
@@ -72,11 +72,11 @@ services:
       - stu_assistant
 
   gateway:
-    build:
-      context: .
-      dockerfile: Dockerfile.gateway
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.gateway
     container_name: gateway
-    #image: yuqingorigingod/gateway
+    image: image-gateway
     restart: always
     depends_on:
       - user
@@ -89,10 +89,10 @@ services:
   
   user:
     container_name: user
-    #image: yuqingorigingod/user
-    build:
-      context: .
-      dockerfile: Dockerfile.user
+    image: image-user
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.user
     restart: always
     depends_on:
       - mysql
@@ -105,10 +105,10 @@ services:
   
   task:
     container_name: task
-    #image: yuqingorigingod/task
-    build:
-      context: .
-      dockerfile: Dockerfile.task
+    image: image-task
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.task
     restart: always
     depends_on:
       - mysql
@@ -121,10 +121,10 @@ services:
   
   reminder:
     container_name: reminder
-    #image: yuqingorigingod/reminder
-    build:
-      context: .
-      dockerfile: Dockerfile.reminder
+    image: image-reminder
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.reminder
     restart: always
     depends_on:
       - mysql
@@ -137,10 +137,10 @@ services:
 
   course:
     container_name: course
-    #image: yuqingorigingod/reminder
-    build:
-      context: .
-      dockerfile: Dockerfile.course
+    image: image-course
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.course
     restart: always
     depends_on:
       - mysql
@@ -153,10 +153,10 @@ services:
     
   frontend:
     container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    #image: frontend
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile
+    image: image-frontend
     restart: always
     depends_on:
       - gateway
