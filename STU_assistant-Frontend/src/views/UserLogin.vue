@@ -14,7 +14,7 @@
 
 <script>
 import DefaultLogin from '@/components/DefaultLogin.vue';
-import UserRegister from '@/components/userRegister.vue';
+import UserRegister from '@/components/UserRegister.vue';
 export default {
     name: 'UserLogin',
     components:{
